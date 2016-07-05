@@ -1,9 +1,9 @@
 {
     "postgres": {
     	"port"	   : 5432,
-        "db"       : "fuerocivil1",
+        "db"       : "postgres",
         "user"     : "postgres",
-        "password" : "postgres",
-        "host"     : "192.168.90.120"
+        "password" : "pg92",
+        "host"     : "localhost"
     }
 }

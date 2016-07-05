@@ -1,52 +1,88 @@
-/*
-	##APP
-	FUNCION PRINCIPAL DONDE BASICAMENTE SE DEBEN TRATAR LAS 
-	FUNCIONES PRINCIPALES DE TODO EL SISTEMA
-
-*/
-
 var app = function(){
-	/*Funcion que inicia los eventos*/
-	var initEvents = function(){
-		$( document ).ready(function() {
-			/*Ocultar boton guardar*/
-			$("#guardar_btn").css('display', 'none');
-			$("#loading").hide();
 
+	/* Función que inicia todos los eventos que se cargan 
+		al terminar de cargar la página
+	*/
+	var initEvent = function(){
+		
+		$(document).ready(function() {
+			/*Renderizar pagina full*/
+			var fullHeight = $(window).height() - $(".header").outerHeight() - $(".title-board").outerHeight();
+			$(".container-full").height(fullHeight);
 
-			/*CALL FUNCTIONS*/
-			directory.getNodes();
-			deleteTextLicence();
-			deleteSeparadorEditor();
-			directory.insertText();
-			directory.editarButtom();
-			//directory.selectedNode();
+			/*metodos*/
+			getUser();
+			column.getJSON();
+			moment.locale();			
+		
 		});
 	}
 
-	/*Elimina un div que separa los botones y los manda abajo*/
-	var deleteSeparadorEditor = function(){
-		$('div').each(function(index) {
-			var style = $(this).attr('class');
-			if(style == 'fr-separator fr-hs'){
-				console.log($(this));
-			  	$(this).remove();
-			}
+	var getUser = function(){
+		$.get('rsesion/getSession', function(user){
+	    	$("#nameUser").text(user);
 		});
 	}
 
-	/*Elimina el texto de que la licencia no es la original*/
-	var deleteTextLicence = function(){
-		$('div>a').each(function(index) {
-			var style = $(this).attr('href');
-			if(style == 'https://froala.com/wysiwyg-editor'){
-			  	$(this).remove();
-			}
+	/*Cuando vuelve del callback, si acepta la peticion de acceso
+		- pone un alerta confirmando
+		- llama a positInWait del module posit(post-it.js)*/
+	var confirmCalendar = function(){
+		$.get('/confirmCalendar', function(data){
+			var fechaWait = new Date(data.fecha)
+				fecha = moment(data.fecha, 'YYYY.MM.DD').format('DD/MM/YYYY');
+
+			if(data){
+				if (data.link) {
+					Lobibox.alert("success",{
+						title: "Éxito",
+						msg: "Se ha registrado un nuevo evento en su calendario el " + fecha
+					});
+				}else{
+					$.post("ritem/deleteFecha", {item: data.id}, function(){
+	                })
+	                .done(function(red){
+	                	$('li[data-id="'+data.id+'"]').find(".drag-handler").show();
+            			$('li[data-id="'+data.id+'"]').addClass("nowait").removeClass("positWait");
+            			$('li[data-id="'+data.id+'"] .todo-actions .edit-todo').show();
+            			$('li[data-id="'+data.id+'"] .lobilist-item-duedate').remove();
+            			column.countItem();
+            			Lobibox.alert("error",{
+                            title: "ERROR",
+                            msg: "Hubo un error al intentar conectar con Google Calendar. Verifique su conexión..."
+                        }); 
+	                })	
+				}
+				
+
+		    }
+		    	
 		});
 	}
-	
+
+	/* 
+		Suprimir el uso de la tecla ENTER en Textarea
+	*/
+	var form_sin_enter = function($char, $mozChar){
+	   	$('input').keypress(function(e){   
+		    if(e == 13){
+		      return false;
+		    }
+	  	});
+
+		$('textarea').keypress(function(e){
+		    if(e.which == 13){
+		      return false;
+		    }
+		});
+	}
+
 	return{
-		initEvents:initEvents,
+		initEvent:initEvent,
+		confirmCalendar:confirmCalendar,
+		form_sin_enter:form_sin_enter,
+
 	}
+
 }();
-app.initEvents();
+app.initEvent();

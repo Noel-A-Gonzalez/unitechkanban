@@ -5,7 +5,7 @@ var mysql = require('mysql');
     host     : 'localhost',
     user     : 'root',
     password : '',
-    database : 'unitech',
+    database : 'kanban_toolsDB',
   });
 
 connection.connect(function(err){
@@ -16,4 +16,4 @@ connection.connect(function(err){
   console.log('Conexión con la Base de datos establecida..');
 });
 
-//module.exports = connection;
+module.exports = connection;

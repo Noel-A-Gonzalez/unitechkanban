@@ -1,20 +1,25 @@
 var express = require('express');
-var pg = require('pg');
     path = require('path');
-    cons = require('consolidate');
     favicon = require('serve-favicon');
     logger = require('morgan');
     cookieParser = require('cookie-parser');
     bodyParser = require('body-parser');
-    connection = require ('./routes/config/postgres.json');
+    cons = require('consolidate');
+    session = require('express-session');
+    passport = require('passport');
+    google = require('googleapis');
 
-    routes = require('./routes/index');
-    rdatos = require('./routes/rdatos');
+var routes = require('./routes/index');
+var rsesion = require('./routes/rsesion');
+var rstatus = require('./routes/rstatus');
+var ritem = require('./routes/ritem');
+
+require("./public/config-social/passport.js")(passport);
 
 var app = express();
-//var connectionString = "postgres://"+connection.postgres.user+":"+connection.postgres.password+"@"+connection.postgres.host+"/"+connection.postgres.db;
 
 // view engine setup
+//app.set('views', path.join(__dirname, 'views'));
 app.engine('html', cons.handlebars);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
@@ -27,13 +32,34 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Indicamos que use sesiones, para almacenar el objeto usuario
+// y que lo recuerde aunque abandonemos la página
+app.use(session({
+          secret: "esteeselsecreto",
+          saveUnintialized: true,
+          resave:true,
+          cookie:{_expires : 30000000},
+        })
+      );
+
+//Se inicia passport y le decimos que sea él quien maneje la sesion
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use('/', routes);
-app.use('/rdatos', rdatos);
+app.use('/rstatus', rstatus);
+app.use('/ritem', ritem);
+app.use('/rsesion', rsesion);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
+  res.render('error404.html');
   next(err);
 });
 
@@ -44,10 +70,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
+    //res.render('error.html');
   });
 }
 
