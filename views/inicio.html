@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0"/>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="stylesheets/froala_editor.css">
+  <link rel="stylesheet" href="stylesheets/froala_style.css">
+  <link rel="stylesheet" href="stylesheets/plugins/code_view.css">
+  <link rel="stylesheet" href="stylesheets/plugins/image_manager.css">
+  <link rel="stylesheet" href="stylesheets/plugins/image.css">
+  <link rel="stylesheet" href="stylesheets/plugins/table.css">
+  <link rel="stylesheet" href="stylesheets/plugins/video.css">
+  <link rel="stylesheet" href="stylesheets/plugins/file.css">
+  <link rel="stylesheet" href="stylesheets/codemirror.min.css">
+  <link href="stylesheets/bootstrap.css" rel="stylesheet" type="text/css" />
+  <link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  
+  <div id="wrap">
+    <div class="navbar navbar-default navbar-fixed-top navbar-inverse" rol="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Menu</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+              <a class="navbar-brand" href="/"> 
+                
+              </a>
+        </div>
+    </div> 
+      <div id="tree_directory">
+        <input type="text" placeholder="Buscar Nodo" id="plugins4_q" value="" class="input" style="margin-bottom:15px; padding:4px; ">
+        <div id="loading" style="margin-bottom:15px; padding:4px; float:right"><i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom"></i>
+          <span class="sr-only">Loading...</span> 
+        </div>
+        <div id="container_directory">
+          
+        </div>
+      </div>
+      <div id="campos">
+        <div id="txt_titulo">
+          <label>Titulo</label><br />
+          <input type="text" id="ipt_tit" class="input_txt" placeholder="Titulo" disabled>
+        </div>
+        <div id="txt_descripcion">
+          <label>Descripción</label><br />
+          <textarea id="ipt_descr" class="input_txt" placeholder="Descripcion" disabled></textarea>
+        </div> 
+        <button id="editarText">Editar</button>
+        <button id="guardar_btn" onClick="directory.guardarTituloDesc()" disabled>Guardar</button>
+      </div>
+ 
+      <div id="editor">
+          <textarea id='edit' style="height: '100%'; margin-top: 30px;">
+          </textarea>
+          <button id='btn_consultar' onClick="directory.insertText()"> Guardar datos</button>
+      </div>
+    </div>
+
+
+
+<div class="footer">
+  <div class="navbar navbar-inverse navbar-fixed-bottom" id="footer" role="navigation">
+    <div id="pie-leyenda">
+      <p>Powered by Unitech S.A &copy 2016</p>
+    </div>
+  </div>
+</div>
+
+  <script type="text/javascript" src="javascripts/lib/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/froala_editor.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/align.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/code_beautifier.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/code_view.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/draggable.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/image.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/image_manager.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/link.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/lists.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/paragraph_format.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/paragraph_style.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/table.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/video.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/url.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/entities.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/font_size.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/font_family.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/colors.min.js"></script>
+  <script type="text/javascript" src="javascripts/lib/file.min.js"></script>
+  <script src="javascripts/lib/bootbox.min.js"></script>
+  <script src="javascripts/lib/bootstrap.min.js"></script>
+
+
+
+  <script>
+      $(function(){
+        $('#edit')
+          .froalaEditor({enter: $.FroalaEditor.ENTER_P, placeholderText: 'Inserte un texto'})
+      });
+  </script>
+
+  <!-- SCRIPTS PROPIOS DE LA APP -->
+  <script type="text/javascript" src="javascripts/app.js"></script>
+  <script type="text/javascript" src="javascripts/directory.js"></script>
+
+  
+ <script src="javascripts/lib/jstree.min.js"></script>
+  
+</body>
+</html>
